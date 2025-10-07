@@ -7,15 +7,11 @@ commands:
   야생랜덤:
     description: 지정된 월드에서 안전한 랜덤 위치로 텔레포트합니다.
     usage: /야생랜덤 [플레이어]
-    aliases: [wildrandom, wild]
-    permission: wildrandom.visible
-    permission-message: "&c알 수 없는 명령어입니다."
+    aliases: [wildrandom, wild, 랜덤야생]
   확성기:
     description: 서버 전체에 확성기 메시지를 보냅니다.
     usage: /확성기 <메시지>
     aliases: [megaphone, shout]
-    permission: shout.visible
-    permission-message: "&c알 수 없는 명령어입니다."
 permissions:
   wildrandom.use:
     description: /야생랜덤 사용 (자기 자신) — 현재는 무권한 허용

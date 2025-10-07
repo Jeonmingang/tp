@@ -35,7 +35,8 @@ public class RandomWildPlugin extends JavaPlugin {
             getLogger().warning("Command /확성기 not found in plugin.yml");
         }
 
-        try { getServer().getPluginManager().registerEvents(new WildInterceptListener(this), this); } catch (Throwable ignored) {}
+        try { getServer().getPluginManager().registerEvents(new WildInterceptListener(this), this);
+        getServer().getPluginManager().registerEvents(new CommandVisibilityFilter(), this); } catch (Throwable ignored) {}
         try { getServer().getPluginManager().registerEvents(new ShoutInterceptListener(this, shoutMgr), this); } catch (Throwable ignored) {}
 
         getLogger().info("WildRandom enabled.");

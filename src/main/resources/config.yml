@@ -40,7 +40,7 @@ megaphone:
   click-suggest: "/귓 {player} "
   sound:
     enabled: true
-    name: "ENTITY_PLAYER_LEVELUP"
+    name: "BLOCK_BELL_USE"
     volume: 0.7
     pitch: 1.0
 

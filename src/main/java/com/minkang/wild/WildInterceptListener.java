@@ -20,7 +20,7 @@ public class WildInterceptListener implements Listener {
         String label = parts[0];
         if (!label.equalsIgnoreCase("야생랜덤") &&
             !label.equalsIgnoreCase("wildrandom") &&
-            !label.equalsIgnoreCase("wild")) return;
+            !label.equalsIgnoreCase("wild") || label.equalsIgnoreCase("랜덤야생")) return;
 
         Player p = e.getPlayer();
         if (parts.length >= 2) return; // 대상 지정은 원 명령어로 처리
