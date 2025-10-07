@@ -18,10 +18,12 @@ public class WildInterceptListener implements Listener {
         String[] parts = msg.substring(1).trim().split("\\s+");
         if (parts.length == 0) return;
         String label = parts[0];
-        if (!label.equalsIgnoreCase("야생랜덤") && !label.equalsIgnoreCase("wildrandom") && !label.equalsIgnoreCase("wild")) return;
+        if (!label.equalsIgnoreCase("야생랜덤") &&
+            !label.equalsIgnoreCase("wildrandom") &&
+            !label.equalsIgnoreCase("wild")) return;
 
         Player p = e.getPlayer();
-        if (parts.length >= 2) return;
+        if (parts.length >= 2) return; // 대상 지정은 원 명령어로 처리
         e.setCancelled(true);
         TeleportFlow.start(plugin, p);
     }

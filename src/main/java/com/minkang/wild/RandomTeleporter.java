@@ -31,31 +31,55 @@ public class RandomTeleporter {
     public Location findSafe(RandomWildPlugin plugin, World world) {
         int min = Math.max(0, plugin.cfg().getInt("min-radius", 200));
         int max = Math.max(min + 1, plugin.cfg().getInt("max-radius", 5000));
-        int attempts = Math.max(1, plugin.cfg().getInt("max-attempts", 80));
+        int attempts = Math.max(1, plugin.cfg().getInt("max-attempts", 120));
+
+        int phases = Math.max(1, plugin.cfg().getInt("search.phases", 3));
+        double grow = plugin.cfg().getDouble("search.phase-radius-grow", 0.5);
+        int downDepth = Math.max(0, plugin.cfg().getInt("search.downward-check-depth", 8));
+
         @SuppressWarnings("unchecked")
         List<String> unsafe = (List<String>) plugin.cfg().getList("unsafe-blocks");
 
         Location center = world.getSpawnLocation();
-        for (int i = 0; i < attempts; i++) {
-            double angle = rng.nextDouble() * Math.PI * 2;
-            int dist = min + rng.nextInt(max - min + 1);
-            int x = center.getBlockX() + (int) Math.round(Math.cos(angle) * dist);
-            int z = center.getBlockZ() + (int) Math.round(Math.sin(angle) * dist);
+        int triesPerPhase = Math.max(1, attempts / phases);
+        int leftover = Math.max(0, attempts - triesPerPhase * phases);
 
-            int surfaceY = world.getHighestBlockYAt(x, z);
-            if (surfaceY <= world.getMinHeight()) continue;
+        for (int ph = 0; ph < phases; ph++) {
+            double scale = 1.0 + (grow * ph);
+            int pMin = (int)Math.round(min * scale);
+            int pMax = (int)Math.round(max * scale);
 
-            int feetY = surfaceY + 1;
-            int headY = surfaceY + 2;
+            int tries = triesPerPhase + (ph == phases - 1 ? leftover : 0);
 
-            Block below = world.getBlockAt(x, surfaceY, z);
-            Block feet = world.getBlockAt(x, feetY, z);
-            Block head = world.getBlockAt(x, headY, z);
+            for (int i = 0; i < tries; i++) {
+                double angle = rng.nextDouble() * Math.PI * 2;
+                int dist = pMin + rng.nextInt(pMax - pMin + 1);
+                int x = center.getBlockX() + (int) Math.round(Math.cos(angle) * dist);
+                int z = center.getBlockZ() + (int) Math.round(Math.sin(angle) * dist);
+
+                int surfaceY = world.getHighestBlockYAt(x, z);
+                if (surfaceY <= world.getMinHeight()) continue;
+
+                Location candidate = checkColumn(world, x, z, surfaceY, downDepth, unsafe);
+                if (candidate != null) return candidate;
+            }
+        }
+        return null;
+    }
+
+    private Location checkColumn(World world, int x, int z, int surfaceY, int downDepth, List<String> blacklist) {
+        for (int dy = 0; dy <= downDepth; dy++) {
+            int y = surfaceY - dy;
+            if (y < world.getMinHeight() || y + 2 > world.getMaxHeight()) break;
+
+            Block below = world.getBlockAt(x, y, z);
+            Block feet  = world.getBlockAt(x, y + 1, z);
+            Block head  = world.getBlockAt(x, y + 2, z);
 
             if (!feet.getType().isAir() || !head.getType().isAir()) continue;
-            if (!isSolidGround(below.getType(), unsafe)) continue;
+            if (!isSolidGround(below.getType(), blacklist)) continue;
 
-            return new Location(world, x + 0.5, feetY, z + 0.5);
+            return new Location(world, x + 0.5, y + 1, z + 0.5);
         }
         return null;
     }
@@ -70,17 +94,5 @@ public class RandomTeleporter {
             }
         }
         return mat.isSolid();
-    }
-
-    public void teleportWithTitles(org.bukkit.entity.Player p, Location to) {
-        p.sendTitle(ChatColor.YELLOW + "이동중...", ChatColor.GRAY + "야생 좌표를 찾는 중", 5, 20, 5);
-        p.getWorld().playSound(p.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 0.6f, 1.2f);
-        p.teleport(to);
-        String sub = ChatColor.GRAY + String.format("(x:%d, y:%d, z:%d)", to.getBlockX(), to.getBlockY(), to.getBlockZ());
-        p.sendTitle(ChatColor.GREEN + "이동 완료!", sub, 10, 40, 10);
-        p.spigot().sendMessage(net.md_5.bungee.api.ChatMessageType.ACTION_BAR,
-                new net.md_5.bungee.api.chat.TextComponent(ChatColor.AQUA + "야생으로 이동되었습니다."));
-        p.getWorld().spawnParticle(Particle.PORTAL, to, 60, 0.8, 1.0, 0.8, 0.1);
-        p.getWorld().playSound(to, Sound.ENTITY_ENDERMAN_TELEPORT, 0.8f, 0.9f);
     }
 }

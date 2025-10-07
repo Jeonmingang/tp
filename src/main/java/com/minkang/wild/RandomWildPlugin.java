@@ -46,7 +46,7 @@ public class RandomWildPlugin extends JavaPlugin {
 
     public World targetWorld() {
         String w = getConfig().getString("world", "world");
-        World world = Bukkit.getWorld(w); // always use configured world
+        World world = Bukkit.getWorld(w); // ALWAYS use configured target world
         if (world == null && !Bukkit.getWorlds().isEmpty()) {
             getLogger().warning("Target world '" + w + "' not found; using default world.");
             world = Bukkit.getWorlds().get(0);

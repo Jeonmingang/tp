@@ -12,9 +12,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
-import java.text.SimpleDateFormat;
-import java.util.*;
-
 public class ShoutCommand implements CommandExecutor, TabCompleter {
     private final RandomWildPlugin plugin;
     private final ShoutManager manager;
@@ -53,10 +50,9 @@ public class ShoutCommand implements CommandExecutor, TabCompleter {
         boolean allowHex = plugin.getConfig().getBoolean("megaphone.allow-hex", true) && p.hasPermission("shout.color");
         String text = TextUtil.colorize(raw, allowColor, allowHex);
 
-        String prefix = plugin.getConfig().getString("megaphone.prefix", "&6[확성기] &f{player}&7: ");
-        prefix = TextUtil.colorize(prefix.replace("{player}", p.getName()), true, allowHex);
+        String prefix = TextUtil.colorize(plugin.getConfig().getString("megaphone.prefix", "&6[확성기] &f{player}&7: ").replace("{player}", p.getName()), true, allowHex);
 
-        String hoverTpl = plugin.getConfig().getString("megaphone.hover", "&e{player}님의 확성기\n&7{time}");
+        String hoverTpl = plugin.getConfig().getString("megaphone.hover", "&e{player}님의 확성기\\n&7{time}");
         String now = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date());
         String hover = TextUtil.colorize(hoverTpl.replace("{player}", p.getName()).replace("{time}", now), true, allowHex);
 

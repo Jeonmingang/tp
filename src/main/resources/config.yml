@@ -1,16 +1,20 @@
 world: world
 min-radius: 200
 max-radius: 5000
-max-attempts: 80
+max-attempts: 120
 cooldown-seconds: 60
 
-# 0 = 즉시 이동
 countdown-seconds: 1
 title-countdown: "&e이동까지 &6{sec}&es"
 title-searching: "&e이동중..."
 title-done: "&a이동 완료!"
 title-sub-found: "&7야생 좌표를 찾는 중"
 title-sub-done: "&7(x:{x}, y:{y}, z:{z})"
+
+search:
+  downward-check-depth: 8
+  phases: 3
+  phase-radius-grow: 0.5
 
 unsafe-blocks:
   - LAVA
@@ -39,3 +43,5 @@ megaphone:
     name: "ENTITY_PLAYER_LEVELUP"
     volume: 0.7
     pitch: 1.0
+
+debug: false
