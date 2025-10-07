@@ -2,7 +2,7 @@ name: WildRandom
 main: com.minkang.wild.RandomWildPlugin
 version: 1.2.8
 api-version: 1.16
-author: MinKang+GPT
+author: MinKang
 commands:
   야생랜덤:
     description: 지정된 월드에서 안전한 랜덤 위치로 텔레포트합니다.
