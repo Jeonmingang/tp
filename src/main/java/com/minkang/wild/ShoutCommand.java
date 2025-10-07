@@ -16,23 +16,15 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class ShoutCommand implements CommandExecutor, TabCompleter {
-
     private final RandomWildPlugin plugin;
     private final ShoutManager manager;
-
-    public ShoutCommand(RandomWildPlugin plugin, ShoutManager mgr) {
-        this.plugin = plugin;
-        this.manager = mgr;
-    }
+    public ShoutCommand(RandomWildPlugin plugin, ShoutManager mgr) { this.plugin = plugin; this.manager = mgr; }
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (!(sender instanceof Player)) { sender.sendMessage("§c플레이어만 사용할 수 있습니다."); return true; }
         Player p = (Player) sender;
-
-        if (!plugin.getConfig().getBoolean("megaphone.enabled", true)) {
-            p.sendMessage("§c확성기가 비활성화되어 있습니다."); return true;
-        }
+        if (!plugin.getConfig().getBoolean("megaphone.enabled", true)) { p.sendMessage("§c확성기가 비활성화되어 있습니다."); return true; }
         if (args.length == 0) { p.sendMessage("§e사용법: /확성기 <메시지>"); return true; }
 
         String raw = String.join(" ", args);
@@ -41,16 +33,11 @@ public class ShoutCommand implements CommandExecutor, TabCompleter {
 
         int dupSec = Math.max(0, plugin.getConfig().getInt("megaphone.anti-duplicate-seconds", 10));
         String last = manager.getLastMsg(p.getUniqueId());
-        if (dupSec > 0 && last != null && last.equalsIgnoreCase(raw)) {
-            p.sendMessage("§c같은 메시지를 연속으로 보낼 수 없습니다."); return true;
-        }
+        if (dupSec > 0 && last != null && last.equalsIgnoreCase(raw)) { p.sendMessage("§c같은 메시지를 연속으로 보낼 수 없습니다."); return true; }
 
         int cd = Math.max(0, plugin.getConfig().getInt("megaphone.cooldown-seconds", 30));
         long remain = manager.remaining(p.getUniqueId(), cd);
-        if (remain > 0 && !p.hasPermission("shout.bypass.cooldown")) {
-            p.sendMessage("§e잠시 후 다시 사용 가능: §c" + Math.max(1, Math.round(remain/1000.0)) + "초");
-            return true;
-        }
+        if (remain > 0 && !p.hasPermission("shout.bypass.cooldown")) { p.sendMessage("§e잠시 후 다시 사용 가능: §c" + Math.max(1, Math.round(remain/1000.0)) + "초"); return true; }
 
         boolean useVault = plugin.getConfig().getBoolean("megaphone.use-vault", true);
         double cost = plugin.getConfig().getDouble("megaphone.cost-per-use", 0.0);
@@ -70,7 +57,7 @@ public class ShoutCommand implements CommandExecutor, TabCompleter {
         prefix = TextUtil.colorize(prefix.replace("{player}", p.getName()), true, allowHex);
 
         String hoverTpl = plugin.getConfig().getString("megaphone.hover", "&e{player}님의 확성기\n&7{time}");
-        String now = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+        String now = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date());
         String hover = TextUtil.colorize(hoverTpl.replace("{player}", p.getName()).replace("{time}", now), true, allowHex);
 
         String suggest = plugin.getConfig().getString("megaphone.click-suggest", "/귓 {player} ").replace("{player}", p.getName());
@@ -84,7 +71,7 @@ public class ShoutCommand implements CommandExecutor, TabCompleter {
         Bukkit.getConsoleSender().sendMessage(prefix + text);
 
         if (plugin.getConfig().getBoolean("megaphone.sound.enabled", true)) {
-            String name = plugin.getConfig().getString("megaphone.sound.name", "UI_TOAST_CHALLENGE_COMPLETE");
+            String name = plugin.getConfig().getString("megaphone.sound.name", "ENTITY_PLAYER_LEVELUP");
             float vol = (float) plugin.getConfig().getDouble("megaphone.sound.volume", 0.7);
             float pit = (float) plugin.getConfig().getDouble("megaphone.sound.pitch", 1.0);
             try {
@@ -98,7 +85,5 @@ public class ShoutCommand implements CommandExecutor, TabCompleter {
         return true;
     }
 
-    @Override public List<String> onTabComplete(CommandSender s, Command c, String a, String[] args) {
-        return Collections.emptyList();
-    }
+    @Override public java.util.List<String> onTabComplete(CommandSender s, Command c, String a, String[] args) { return java.util.Collections.emptyList(); }
 }

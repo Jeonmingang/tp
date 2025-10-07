@@ -15,8 +15,7 @@ public class TextUtil {
         return out;
     }
     private static String applyHex(String s) {
-        String out = s.replaceAll("(?i)&#([A-F0-9]{6})", "§x§$1")
-                      .replaceAll("(?i)§#([A-F0-9]{6})", "§x§$1");
+        String out = s.replaceAll("(?i)&#([A-F0-9]{6})", "§x§$1").replaceAll("(?i)§#([A-F0-9]{6})", "§x§$1");
         StringBuilder b = new StringBuilder();
         for (int i = 0; i < out.length(); i++) {
             char c = out.charAt(i);

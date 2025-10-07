@@ -16,7 +16,6 @@ public class RandomWildPlugin extends JavaPlugin {
         saveDefaultConfig();
         this.cooldowns = new CooldownManager(this);
 
-        // Register commands safely (avoid NPE if plugin.yml mismatch)
         if (getCommand("야생랜덤") != null) {
             RandomWildCommand wildCmd = new RandomWildCommand(this);
             getCommand("야생랜덤").setExecutor(wildCmd);
@@ -25,12 +24,7 @@ public class RandomWildPlugin extends JavaPlugin {
             getLogger().warning("Command /야생랜덤 not found in plugin.yml");
         }
 
-        // Optional hooks & shout system
-        try {
-            VaultHook.setup();
-        } catch (Throwable t) {
-            getLogger().warning("Vault setup skipped: " + t.getMessage());
-        }
+        try { VaultHook.setup(); } catch (Throwable t) { getLogger().warning("Vault setup skipped: " + t.getMessage()); }
 
         ShoutManager shoutMgr = new ShoutManager();
         if (getCommand("확성기") != null) {
@@ -41,29 +35,20 @@ public class RandomWildPlugin extends JavaPlugin {
             getLogger().warning("Command /확성기 not found in plugin.yml");
         }
 
-        // Listeners (intercepts to allow non-OP usage while keeping commands hidden from help)
-        try {
-            getServer().getPluginManager().registerEvents(new WildInterceptListener(this), this);
-        } catch (Throwable t) {
-            getLogger().warning("Failed to register WildInterceptListener: " + t.getMessage());
-        }
-        try {
-            getServer().getPluginManager().registerEvents(new ShoutInterceptListener(this, shoutMgr), this);
-        } catch (Throwable t) {
-            getLogger().warning("Failed to register ShoutInterceptListener: " + t.getMessage());
-        }
+        try { getServer().getPluginManager().registerEvents(new WildInterceptListener(this), this); } catch (Throwable ignored) {}
+        try { getServer().getPluginManager().registerEvents(new ShoutInterceptListener(this, shoutMgr), this); } catch (Throwable ignored) {}
 
         getLogger().info("WildRandom enabled.");
     }
 
     public static RandomWildPlugin getInstance() { return instance; }
-
     public FileConfiguration cfg() { return getConfig(); }
 
     public World targetWorld() {
         String w = getConfig().getString("world", "world");
-        World world = Bukkit.getWorld(w);
+        World world = Bukkit.getWorld(w); // always use configured world
         if (world == null && !Bukkit.getWorlds().isEmpty()) {
+            getLogger().warning("Target world '" + w + "' not found; using default world.");
             world = Bukkit.getWorlds().get(0);
         }
         return world;

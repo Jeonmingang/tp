@@ -1,10 +1,11 @@
 world: world
 min-radius: 200
 max-radius: 5000
-max-attempts: 40
+max-attempts: 80
 cooldown-seconds: 60
 
-countdown-seconds: 3
+# 0 = 즉시 이동
+countdown-seconds: 1
 title-countdown: "&e이동까지 &6{sec}&es"
 title-searching: "&e이동중..."
 title-done: "&a이동 완료!"
@@ -18,6 +19,7 @@ unsafe-blocks:
   - FIRE
   - CAMPFIRE
   - SWEET_BERRY_BUSH
+  - MAGMA_BLOCK
 
 megaphone:
   enabled: true
@@ -34,6 +36,6 @@ megaphone:
   click-suggest: "/귓 {player} "
   sound:
     enabled: true
-    name: "UI_TOAST_CHALLENGE_COMPLETE"
+    name: "ENTITY_PLAYER_LEVELUP"
     volume: 0.7
     pitch: 1.0

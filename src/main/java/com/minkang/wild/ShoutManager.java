@@ -7,7 +7,6 @@ import java.util.UUID;
 public class ShoutManager {
     private final Map<UUID, Long> lastUse = new HashMap<>();
     private final Map<UUID, String> lastMsg = new HashMap<>();
-
     public long remaining(UUID id, int cdSeconds) {
         if (cdSeconds <= 0) return 0L;
         long now = System.currentTimeMillis();

@@ -6,7 +6,6 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 
 public class VaultHook {
     private static Economy econ;
-
     public static void setup() {
         try {
             if (Bukkit.getPluginManager().getPlugin("Vault") == null) return;

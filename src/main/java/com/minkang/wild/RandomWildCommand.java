@@ -1,7 +1,6 @@
 package com.minkang.wild;
 
 import org.bukkit.Bukkit;
-import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -22,16 +21,13 @@ public class RandomWildCommand implements CommandExecutor, TabCompleter {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         Player target;
         if (args.length >= 1) {
-            if (!sender.hasPermission("wildrandom.others")) {
-                sender.sendMessage("§c권한이 없습니다."); return true;
-            }
+            if (!sender.hasPermission("wildrandom.others")) { sender.sendMessage("§c권한이 없습니다."); return true; }
             target = Bukkit.getPlayerExact(args[0]);
             if (target == null) { sender.sendMessage("§c해당 플레이어를 찾을 수 없습니다."); return true; }
         } else {
             if (!(sender instanceof Player)) { sender.sendMessage("§c콘솔은 /야생랜덤 <플레이어> 를 사용하세요."); return true; }
             target = (Player) sender;
         }
-
         TeleportFlow.start(plugin, target);
         return true;
     }
