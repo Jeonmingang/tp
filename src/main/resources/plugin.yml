@@ -1,6 +1,6 @@
 name: WildRandom
 main: com.minkang.wild.RandomWildPlugin
-version: 1.2.8
+version: 1.2.9
 api-version: 1.16
 author: MinKang
 commands:
