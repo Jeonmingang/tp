@@ -1,0 +1,43 @@
+# 랜덤 텔레포트 설정
+world: world           # 텔레포트가 이뤄질 대상 월드 이름
+min-radius: 200        # 최소 반경 (스폰/0,0 기준)
+max-radius: 5000       # 최대 반경
+max-attempts: 40       # 안전 지형을 찾기 위한 최대 시도 횟수
+cooldown-seconds: 60   # 플레이어당 쿨다운(초). 0이면 비활성화
+
+# 카운트다운 (초) - 0 이면 즉시 탐색/이동
+countdown-seconds: 3
+title-countdown: "&e이동까지 &6{sec}&es"
+title-searching: "&e이동중..."
+title-done: "&a이동 완료!"
+title-sub-found: "&7야생 좌표를 찾는 중"
+title-sub-done: "&7(x:{x}, y:{y}, z:{z})"
+
+# 피해야 할 블록(발밑 또는 머리 위) - 위험 지형 필터
+unsafe-blocks:
+  - LAVA
+  - WATER
+  - CACTUS
+  - FIRE
+  - CAMPFIRE
+  - SWEET_BERRY_BUSH
+
+
+megaphone:
+  enabled: true
+  use-vault: true
+  cost-per-use: 1000
+  currency-name: "코인"
+  cooldown-seconds: 30
+  anti-duplicate-seconds: 10
+  message-max-length: 120
+  allow-color: true
+  allow-hex: true
+  prefix: "&6[확성기] &f{player}&7: "
+  hover: "&e{player}님의 확성기&7\n&7{time}"
+  click-suggest: "/귓 {player} "
+  sound:
+    enabled: true
+    name: "UI_TOAST_CHALLENGE_COMPLETE"
+    volume: 0.7
+    pitch: 1.0
