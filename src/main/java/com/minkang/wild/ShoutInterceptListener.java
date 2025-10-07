@@ -23,7 +23,7 @@ public class ShoutInterceptListener implements Listener {
         if (raw.isEmpty()) return;
 
         // split label + args
-        String[] parts = raw.split("\s+");
+        String[] parts = raw.split("\\s+");
         String label = parts[0];
         if (!label.equalsIgnoreCase("확성기") &&
             !label.equalsIgnoreCase("megaphone") &&

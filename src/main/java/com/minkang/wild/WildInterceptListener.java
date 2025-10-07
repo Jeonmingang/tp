@@ -28,7 +28,7 @@ public class WildInterceptListener implements Listener {
         String raw = msg.substring(1);
 
         // Only exact base command (no args) or with one arg; accept aliases too
-        String[] parts = raw.split("\s+");
+        String[] parts = raw.split("\\s+");
         if (parts.length == 0) return;
 
         String label = parts[0];
