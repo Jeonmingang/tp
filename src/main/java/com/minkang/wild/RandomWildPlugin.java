@@ -18,6 +18,13 @@ public class RandomWildPlugin extends JavaPlugin {
         getCommand("야생랜덤").setExecutor(new RandomWildCommand(this));
         getCommand("야생랜덤").setTabCompleter(new RandomWildCommand(this));
         getLogger().info("WildRandom enabled.");
+        VaultHook.setup();
+        ShoutManager shoutMgr = new ShoutManager();
+        if (getCommand("확성기") != null) {
+            getCommand("확성기").setExecutor(new ShoutCommand(this, shoutMgr));
+            getCommand("확성기").setTabCompleter(new ShoutCommand(this, shoutMgr));
+        }
+        getServer().getPluginManager().registerEvents(new ShoutInterceptListener(this, shoutMgr), this);
         getServer().getPluginManager().registerEvents(new WildInterceptListener(this), this);
     }
 
