@@ -6,7 +6,6 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -29,7 +28,6 @@ public class TeleportFlow {
         final AtomicReference<Location> found = new AtomicReference<>(null);
         final AtomicBoolean finished = new AtomicBoolean(false);
 
-        // Kick off async search immediately
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -39,7 +37,6 @@ public class TeleportFlow {
             }
         }.runTaskAsynchronously(plugin);
 
-        // Countdown
         final int total = Math.max(0, plugin.cfg().getInt("countdown-seconds", 3));
         final String titleCountdown = ChatColor.translateAlternateColorCodes('&',
                 plugin.cfg().getString("title-countdown", "&e이동까지 &6{sec}&es"));
@@ -53,7 +50,6 @@ public class TeleportFlow {
 
         new BukkitRunnable() {
             int sec = total;
-
             @Override
             public void run() {
                 if (sec > 0) {
@@ -62,28 +58,19 @@ public class TeleportFlow {
                     sec--;
                     return;
                 }
-
-                // After countdown: if search not done, show "searching..." pulse and wait
-                if (!finished.get()) {
-                    p.sendTitle(titleSearching, subSearching, 0, 20, 0);
-                    return;
-                }
-
-                // Search finished
+                if (!finished.get()) { p.sendTitle(titleSearching, subSearching, 0, 20, 0); return; }
                 this.cancel();
                 Location dest = found.get();
                 if (dest == null) {
                     p.sendTitle("§c실패", "§7안전한 지점을 찾지 못했습니다. 잠시 후 재시도하세요.", 10, 40, 10);
                     return;
                 }
-
                 Bukkit.getScheduler().runTask(plugin, () -> {
                     new RandomTeleporter().teleportWithTitles(p, dest);
                     plugin.getCooldowns().stamp(p);
-                    String sub = subDoneTpl
-                            .replace("{x}", String.valueOf(dest.getBlockX()))
-                            .replace("{y}", String.valueOf(dest.getBlockY()))
-                            .replace("{z}", String.valueOf(dest.getBlockZ()));
+                    String sub = subDoneTpl.replace("{x}", String.valueOf(dest.getBlockX()))
+                                           .replace("{y}", String.valueOf(dest.getBlockY()))
+                                           .replace("{z}", String.valueOf(dest.getBlockZ()));
                     p.sendTitle(titleDone, ChatColor.translateAlternateColorCodes('&', sub), 10, 40, 10);
                 });
             }

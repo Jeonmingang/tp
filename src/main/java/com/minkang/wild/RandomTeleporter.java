@@ -31,7 +31,7 @@ public class RandomTeleporter {
             Block head = world.getBlockAt(x, y + 1, z);
             Block below = world.getBlockAt(x, y - 1, z);
 
-            if (!feet.isEmpty() || !head.isEmpty()) continue; // 공간이 비어있어야 함
+            if (!feet.isEmpty() || !head.isEmpty()) continue;
             if (isUnsafe(below.getType(), unsafe)) continue;
 
             return new Location(world, x + 0.5, y, z + 0.5);
@@ -43,12 +43,9 @@ public class RandomTeleporter {
         if (mat == null) return true;
         if (blacklist != null) {
             for (String s : blacklist) {
-                try {
-                    if (mat == Material.valueOf(s)) return true;
-                } catch (IllegalArgumentException ignored) {}
+                try { if (mat == Material.valueOf(s)) return true; } catch (IllegalArgumentException ignored) {}
             }
         }
-        // 기본적으로 액체/용암/불/공기는 불가
         if (mat == Material.LAVA || mat == Material.FIRE || mat == Material.CAMPFIRE) return true;
         if (mat == Material.WATER) return true;
         if (mat.isAir()) return true;
@@ -56,17 +53,10 @@ public class RandomTeleporter {
     }
 
     public void teleportWithTitles(Player p, Location to) {
-        // 이동 전: 중앙 타이틀
         p.sendTitle(ChatColor.YELLOW + "이동중...", ChatColor.GRAY + "야생 좌표를 찾는 중", 10, 40, 10);
-        // 파티클/사운드 (가벼운 연출)
         p.getWorld().playSound(p.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 0.6f, 1.2f);
-
-        // 실제 텔레포트
         p.teleport(to);
-
-        // 완료 타이틀 + 좌표
-        String sub = ChatColor.GRAY + String.format("(x:%d, y:%d, z:%d)",
-                to.getBlockX(), to.getBlockY(), to.getBlockZ());
+        String sub = ChatColor.GRAY + String.format("(x:%d, y:%d, z:%d)", to.getBlockX(), to.getBlockY(), to.getBlockZ());
         p.sendTitle(ChatColor.GREEN + "이동 완료!", sub, 10, 40, 10);
         p.spigot().sendMessage(net.md_5.bungee.api.ChatMessageType.ACTION_BAR,
                 new net.md_5.bungee.api.chat.TextComponent(ChatColor.AQUA + "야생으로 이동되었습니다."));

@@ -1,5 +1,43 @@
 name: WildRandom
 main: com.minkang.wild.RandomWildPlugin
-version: 1.2.4
+version: 1.2.5
 api-version: 1.16
 author: MinKang+GPT
+commands:
+  야생랜덤:
+    description: 지정된 월드에서 안전한 랜덤 위치로 텔레포트합니다.
+    usage: /야생랜덤 [플레이어]
+    aliases: [wildrandom, wild]
+    permission: wildrandom.visible
+    permission-message: "&c알 수 없는 명령어입니다."
+  확성기:
+    description: 서버 전체에 확성기 메시지를 보냅니다.
+    usage: /확성기 <메시지>
+    aliases: [megaphone, shout]
+    permission: shout.visible
+    permission-message: "&c알 수 없는 명령어입니다."
+permissions:
+  wildrandom.use:
+    description: /야생랜덤 사용 (자기 자신) — 현재는 무권한 허용
+    default: true
+  wildrandom.others:
+    description: 다른 플레이어를 텔레포트
+    default: op
+  wildrandom.visible:
+    description: 탭 자동완성/도움말에 야생랜덤 표시
+    default: op
+  shout.use:
+    description: /확성기 사용
+    default: true
+  shout.color:
+    description: 색상코드(&)와 HEX를 사용할 수 있음
+    default: op
+  shout.bypass.cooldown:
+    description: 확성기 쿨다운 무시
+    default: op
+  shout.bypass.cost:
+    description: 확성기 사용 비용 무시
+    default: op
+  shout.visible:
+    description: 탭 자동완성/도움말에 확성기 표시
+    default: op
