@@ -13,7 +13,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class TeleportFlow {
 
     public static void start(RandomWildPlugin plugin, Player p) {
-        final World world = plugin.targetWorld(); // ALWAYS use configured world
+        final World world = plugin.targetWorld();
         if (world == null) {
             p.sendMessage("§c대상 월드를 찾을 수 없습니다. config.yml 의 world 값을 확인하세요.");
             return;
@@ -64,17 +64,10 @@ public class TeleportFlow {
                 Location dest = found.get();
                 if (dest == null) {
                     p.sendTitle("§c실패", "§7안전한 지점을 찾지 못했습니다. 잠시 후 재시도하세요.", 10, 30, 10);
-                    if (plugin.getConfig().getBoolean("debug", false)) {
-                        plugin.getLogger().warning("[WildRandom] Failed to find safe spot in '" + world.getName() + "'.");
-                    }
                     return;
                 }
                 Bukkit.getScheduler().runTask(plugin, () -> {
-                    if (plugin.getConfig().getBoolean("debug", false)) {
-                        plugin.getLogger().info("[WildRandom] Teleporting " + p.getName() +
-                                " from '" + p.getWorld().getName() + "' to '" + world.getName() +
-                                "' -> (" + dest.getBlockX() + "," + dest.getBlockY() + "," + dest.getBlockZ() + ")");
-                    }
+                    plugin.getCooldowns().stamp(p); // <-- stamp immediately upon success
                     p.teleport(dest);
                     String sub = subDoneTpl.replace("{x}", String.valueOf(dest.getBlockX()))
                                            .replace("{y}", String.valueOf(dest.getBlockY()))
