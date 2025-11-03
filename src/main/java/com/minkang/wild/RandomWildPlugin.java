@@ -11,12 +11,22 @@ public class RandomWildPlugin extends JavaPlugin {
     private CooldownManager cooldowns;
 
     @Override
-            try {
-            if (getCommand("귓") != null) getCommand("귓").setExecutor(new WhisperAliasCommand(this));
-            if (getCommand("야생랜덤리로드") != null) getCommand("야생랜덤리로드").setExecutor(new ReloadCommand(this));
-        } catch (Throwable ignored) {}
-this.cooldowns = new CooldownManager(this);
+    public void onEnable() {
+        instance = this;
+        saveDefaultConfig();
+        this.cooldowns = new CooldownManager(this);
 
+        // register whisper alias executor + tab-completer
+        try {
+            org.bukkit.command.PluginCommand wc = getCommand("귓");
+            if (wc != null) {
+                WhisperAliasCommand cmdWhisper = new WhisperAliasCommand(this);
+                wc.setExecutor(cmdWhisper);
+                wc.setTabCompleter(cmdWhisper);
+            }
+        } catch (Throwable ignored) {}
+
+        // main random wild command
         if (getCommand("야생랜덤") != null) {
             RandomWildCommand wildCmd = new RandomWildCommand(this);
             getCommand("야생랜덤").setExecutor(wildCmd);
@@ -25,8 +35,11 @@ this.cooldowns = new CooldownManager(this);
             getLogger().warning("Command /야생랜덤 not found in plugin.yml");
         }
 
-        try { VaultHook.setup(); } catch (Throwable t) { getLogger().warning("Vault setup skipped: " + t.getMessage()); }
+        // optional: Vault economy hook
+        try { VaultHook.setup(); } 
+        catch (Throwable t) { getLogger().warning("Vault setup skipped: " + t.getMessage()); }
 
+        // shout command
         ShoutManager shoutMgr = new ShoutManager();
         if (getCommand("확성기") != null) {
             ShoutCommand shout = new ShoutCommand(this, shoutMgr);
@@ -36,13 +49,15 @@ this.cooldowns = new CooldownManager(this);
             getLogger().warning("Command /확성기 not found in plugin.yml");
         }
 
-        try { getServer().getPluginManager().registerEvents(new WildInterceptListener(this), this);
-        getServer().getPluginManager().registerEvents(new CommandVisibilityFilter(), this); } catch (Throwable ignored) {}
-        try { getServer().getPluginManager().registerEvents(new ShoutInterceptListener(this, shoutMgr), this); } catch (Throwable ignored) {}
+        // listeners
+        try {
+            getServer().getPluginManager().registerEvents(new WildInterceptListener(this), this);
+            getServer().getPluginManager().registerEvents(new CommandVisibilityFilter(), this);
+            getServer().getPluginManager().registerEvents(new ShoutInterceptListener(this, shoutMgr), this);
+        } catch (Throwable ignored) {}
 
         getLogger().info("WildRandom enabled.");
     }
-
     public static RandomWildPlugin getInstance() { return instance; }
     public FileConfiguration cfg() { return getConfig(); }
 
