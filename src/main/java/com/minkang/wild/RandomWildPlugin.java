@@ -26,6 +26,16 @@ public class RandomWildPlugin extends JavaPlugin {
             }
         } catch (Throwable ignored) {}
 
+        // reload command
+        try {
+            org.bukkit.command.PluginCommand rc = getCommand("야생랜덤리로드");
+            if (rc != null) {
+                rc.setExecutor(new ReloadCommand(this));
+            } else {
+                getLogger().warning("Command /야생랜덤리로드 not found in plugin.yml");
+            }
+        } catch (Throwable ignored) {}
+    
         // main random wild command
         if (getCommand("야생랜덤") != null) {
             RandomWildCommand wildCmd = new RandomWildCommand(this);

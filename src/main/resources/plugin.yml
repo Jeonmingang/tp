@@ -1,6 +1,6 @@
 name: WildRandom
 main: com.minkang.wild.RandomWildPlugin
-version: 1.3.4
+version: 1.3.5
 api-version: 1.16
 author: MinKang
 commands:
@@ -26,9 +26,10 @@ commands:
     description: WildRandom 설정 리로드
     usage: /야생랜덤리로드
     aliases:
-    - wrreload
     - wildrandomreload
+    - wrreload
     - 랜덤리로드
+    - 야생랜리로드
 permissions:
   wildrandom.use:
     description: /야생랜덤 사용 (자기 자신) — 현재는 무권한 허용
