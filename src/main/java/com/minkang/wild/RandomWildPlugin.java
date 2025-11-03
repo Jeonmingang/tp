@@ -11,10 +11,11 @@ public class RandomWildPlugin extends JavaPlugin {
     private CooldownManager cooldowns;
 
     @Override
-    public void onEnable() {
-        instance = this;
-        saveDefaultConfig();
-        this.cooldowns = new CooldownManager(this);
+    \1        try {
+            if (getCommand("귓") != null) getCommand("귓").setExecutor(new WhisperAliasCommand(this));
+            if (getCommand("야생랜덤리로드") != null) getCommand("야생랜덤리로드").setExecutor(new ReloadCommand(this));
+        } catch (Throwable ignored) {}
+this.cooldowns = new CooldownManager(this);
 
         if (getCommand("야생랜덤") != null) {
             RandomWildCommand wildCmd = new RandomWildCommand(this);
