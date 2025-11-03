@@ -3,45 +3,49 @@ min-radius: 200
 max-radius: 5000
 max-attempts: 120
 cooldown-seconds: 60
-
 countdown-seconds: 1
-title-countdown: "&e이동까지 &6{sec}&es"
-title-searching: "&e이동중..."
-title-done: "&a이동 완료!"
-title-sub-found: "&7야생 좌표를 찾는 중"
-title-sub-done: "&7(x:{x}, y:{y}, z:{z})"
-
+title-countdown: '&e이동까지 &6{sec}&es'
+title-searching: '&e이동중...'
+title-done: '&a이동 완료!'
+title-sub-found: '&7야생 좌표를 찾는 중'
+title-sub-done: '&7(x:{x}, y:{y}, z:{z})'
 search:
   downward-check-depth: 8
   phases: 3
   phase-radius-grow: 0.5
-
 unsafe-blocks:
-  - LAVA
-  - WATER
-  - CACTUS
-  - FIRE
-  - CAMPFIRE
-  - SWEET_BERRY_BUSH
-  - MAGMA_BLOCK
-
+- LAVA
+- WATER
+- CACTUS
+- FIRE
+- CAMPFIRE
+- SWEET_BERRY_BUSH
+- MAGMA_BLOCK
 megaphone:
   enabled: true
   use-vault: true
   cost-per-use: 1000
-  currency-name: "코인"
+  currency-name: 코인
   cooldown-seconds: 30
   anti-duplicate-seconds: 10
   message-max-length: 120
   allow-color: true
   allow-hex: true
-  prefix: "&6[확성기] &f{player}&7: "
-  hover: "&e{player}님의 확성기\n&7{time}"
-  click-suggest: "/귓 {player} "
+  prefix: '&6[확성기] &f{player}&7: '
+  hover: '&e{player}님의 확성기
+
+    &7{time}'
+  click-suggest: '/귓 {player} '
   sound:
     enabled: true
-    name: "BLOCK_BELL_USE"
+    name: BLOCK_BELL_USE
     volume: 0.7
     pitch: 1.0
-
+  cost: 0
+  messages:
+    deducted: '&e확성기 사용료 &6{amount}&e가 차감되었습니다.'
+    insufficient: '&c잔액이 부족합니다. 필요 금액: &e{amount}'
+    bypass: '&7비용이 차감되지 않았습니다.'
+  actionbar:
+    deducted: '&6-{amount} &e확성기'
 debug: false
