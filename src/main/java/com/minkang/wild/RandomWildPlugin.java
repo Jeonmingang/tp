@@ -11,7 +11,7 @@ public class RandomWildPlugin extends JavaPlugin {
     private CooldownManager cooldowns;
 
     @Override
-    \1        try {
+            try {
             if (getCommand("귓") != null) getCommand("귓").setExecutor(new WhisperAliasCommand(this));
             if (getCommand("야생랜덤리로드") != null) getCommand("야생랜덤리로드").setExecutor(new ReloadCommand(this));
         } catch (Throwable ignored) {}

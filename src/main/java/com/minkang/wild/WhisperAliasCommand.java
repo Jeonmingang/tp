@@ -6,7 +6,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class WhisperAliasCommand implements CommandExecutor {
+public class WhisperAliasCommand implements CommandExecutor, org.bukkit.command.TabCompleter {
     private final RandomWildPlugin plugin;
 
     public WhisperAliasCommand(RandomWildPlugin plugin) {
@@ -35,4 +35,22 @@ public class WhisperAliasCommand implements CommandExecutor {
         }
         return true;
     }
+
+
+@Override
+public java.util.List<String> onTabComplete(org.bukkit.command.CommandSender sender, org.bukkit.command.Command command, String alias, String[] args) {
+    // 첫 번째 인자: 플레이어 자동완성
+    if (args.length == 1) {
+        String prefix = args[0].toLowerCase();
+        java.util.List<String> list = new java.util.ArrayList<>();
+        for (org.bukkit.entity.Player p : org.bukkit.Bukkit.getOnlinePlayers()) {
+            String name = p.getName();
+            if (prefix.isEmpty() || name.toLowerCase().startsWith(prefix)) list.add(name);
+        }
+        java.util.Collections.sort(list, String.CASE_INSENSITIVE_ORDER);
+        return list;
+    }
+    return java.util.Collections.emptyList();
+}
+
 }
